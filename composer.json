@@ -3,7 +3,13 @@
     "description": "tg test",
     "type": "library",
     "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Telegram\\": "src/"
+        }
     },
     "license": "MIT",
     "minimum-stability": "dev"
