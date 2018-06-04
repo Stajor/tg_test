@@ -11,13 +11,13 @@ class CommandsHandler {
         $this->request = new Request();
     }
 
-    public function addCommand(object $command) {
+    public function addCommand(string $command) {
         $this->commands[] = $command;
 
         return $this;
     }
 
-    public function addFallbackCommand(object $fallback) {
+    public function addFallbackCommand(string $fallback) {
         $this->fallback = $fallback;
 
         return $this;
