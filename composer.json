@@ -1,5 +1,5 @@
 {
-    "name": "tg/test",
+    "name": "tgtest/test",
     "description": "tg test",
     "type": "library",
     "require": {
