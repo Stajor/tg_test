@@ -24,7 +24,9 @@ class CommandsHandler {
     }
 
     public function handle() {
-        file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export($_POST, true), FILE_APPEND);
+
+
+        file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export($this->request->request->all(), true), FILE_APPEND);
 
     }
 }
