@@ -25,7 +25,9 @@ class CommandsHandler {
 
     public function handle() {
         file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export($this->request->getContent(), true), FILE_APPEND);
+        file_put_contents('/var/www/feedman/shared/storage/logs/request.log', '====1=====', true), FILE_APPEND);
         file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export($this->request->getContent(true), true), FILE_APPEND);
+        file_put_contents('/var/www/feedman/shared/storage/logs/request.log', '====2=====', true), FILE_APPEND);
         file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export(file_get_contents('php://input'), true), FILE_APPEND);
 
 
