@@ -1,23 +1,30 @@
 <?php namespace Telegram\Bot;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class CommandsHandler {
     protected $commands = [];
+    protected $fallback;
+    protected $request;
 
-    public function addCommand() {
+    public function __construct(string $token) {
+        $this->request = new Request();
+    }
+
+    public function addCommand(object $command) {
+        $this->commands[] = $command;
 
         return $this;
     }
 
-    public function addFallbackCommand() {
+    public function addFallbackCommand(object $fallback) {
+        $this->fallback = $fallback;
 
         return $this;
-    }
-
-    public function triggerCommand() {
-
     }
 
     public function handle() {
+        file_put_contents('/var/www/feedman/shared/storage/logs/request.log', var_export($_POST, true), FILE_APPEND);
 
     }
 }
