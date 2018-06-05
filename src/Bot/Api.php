@@ -18,7 +18,7 @@ class Api {
      * @link https://core.telegram.org/bots/api#getme
      * @return User
      */
-    public function getMe() {
+    public function getMe(): User {
         return $this->request('getMe', [], User::class);
     }
 
