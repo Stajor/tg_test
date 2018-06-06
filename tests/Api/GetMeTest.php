@@ -1,15 +1,12 @@
 <?php namespace Telegram\Bot\Test\Api;
 
-use PHPUnit\Framework\TestCase;
-use Telegram\Bot\Api;
 use Telegram\Bot\Types\User;
 
-class GetMeTest extends TestCase {
+class GetMeTest extends ApiTestCase {
     protected $user;
 
     protected function setUp() {
-        $api = new Api('528001940:AAEcezPYlaRHFBT0dJsdqc3HDFok0uPXz1E');
-        $this->user = $api->getMe();
+        $this->user = self::$api->getMe();
     }
 
     public function provider() {
@@ -22,8 +19,9 @@ class GetMeTest extends TestCase {
 
     /**
      * @dataProvider provider
+     * @param $attribute
      */
-    public function testHasAttributes($attribute) {
+    public function testHasAttribute($attribute) {
         $this->assertObjectHasAttribute($attribute, $this->user);
     }
 }

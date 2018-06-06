@@ -1,6 +1,7 @@
 <?php namespace Telegram\Bot\Test\Api;
 
 use PHPUnit\Framework\TestCase;
+use Telegram\Bot\Api;
 
 class ApiTestCase extends TestCase {
     protected static $api;

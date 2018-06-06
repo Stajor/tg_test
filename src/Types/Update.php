@@ -16,12 +16,14 @@ class Update extends Type {
     ];
 
     public $update_id;
+    /** @var Message $message */
     public $message;
     public $edited_message;
     public $channel_post;
     public $edited_channel_post;
     public $inline_query;
     public $chosen_inline_result;
+    /** @var CallbackQuery $callback_query */
     public $callback_query;
     public $shipping_query;
     public $pre_checkout_query;

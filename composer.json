@@ -12,12 +12,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Telegram\\": "src/"
+            "Telegram\\Bot\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Telegram\\Test\\": "tests"
+            "Telegram\\Bot\\Test\\": "tests/"
         }
     },
     "scripts": {
