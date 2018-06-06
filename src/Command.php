@@ -6,9 +6,8 @@ use Telegram\Bot\Types\Update;
 abstract class Command {
     protected $name;
     protected $description;
-    private $update;
     private $api;
-    private $message;
+    private $payload;
 
     abstract public function handle();
 
@@ -16,7 +15,7 @@ abstract class Command {
         return $this->name;
     }
 
-    public function setApi(Api $api): void {
+    public function setApi(Api $api) {
         $this->api = $api;
     }
 
@@ -24,19 +23,21 @@ abstract class Command {
         return $this->api;
     }
 
-    public function setMessage(Message $message) {
-        $this->message = $message;
+    public function setPayload(Payload $payload) {
+        $this->payload = $payload;
     }
 
-    public function getMessage(): Message {
-        return $this->message;
+    public function getPayload(): Payload {
+        return $this->payload;
     }
 
-    public function setUpdate(Update $update): void {
-        $this->update = $update;
+    public function replyWithMessage($params) {
+        $params['chat_id'] = $this->getPayload()->getChat()->id;
+
+        return $this->getApi()->sendMessage($params);
     }
 
-    public function getUpdate(): Update {
-        return $this->update;
+    public function replyWithAction(string $action) {
+        return $this->getApi()->sendChatAction(['chat_id' => $this->getPayload()->getChat()->id, 'action' => $action]);
     }
 }

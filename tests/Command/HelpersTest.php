@@ -1,11 +1,11 @@
 <?php namespace Telegram\Bot\Test\Command;
 
-use Telegram\Bot\Api;
-use Telegram\Bot\Payload;
-use Telegram\Bot\Types\Chat;
-use Telegram\Bot\Types\Update;
+use Telegram\Bot\Command;
+use Telegram\Bot\Types\Action;
+use Telegram\Bot\Types\Message;
 
-class HandlerTest extends HandlerTestCase {
+class HelpersTest extends HandlerTestCase {
+    /** @var Command */
     protected static $command;
 
     public static function setUpBeforeClass() {
@@ -19,15 +19,17 @@ class HandlerTest extends HandlerTestCase {
         self::$command = self::$handler->handle();
     }
 
-    public function testHandleCommand() {
-        $this->assertInstanceOf(TestCommand::class, self::$command);
-        $this->assertInstanceOf(Api::class, self::$command->getApi());
+    public function testReplyWithMessage() {
+        $message = self::$command->replyWithMessage(['text' => 'reply with message']);
+
+        $this->assertInstanceOf(Message::class, $message);
     }
 
-    public function testCommandPayload() {
-        $this->assertInstanceOf(Payload::class, self::$command->getPayload());
-        $this->assertInstanceOf(Update::class, self::$command->getPayload()->getUpdate());
-        $this->assertInstanceOf(Chat::class, self::$command->getPayload()->getChat());
-        $this->assertEquals('/test', self::$command->getPayload()->getText());
+    public function testReplyWithAction() {
+        $result = self::$command->replyWithAction(Action::TYPING);
+
+        die(var_dump($result));
+
+        $this->assertInstanceOf(Message::class, $message);
     }
 }

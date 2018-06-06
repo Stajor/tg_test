@@ -1,20 +1,15 @@
 <?php namespace Telegram\Bot;
 
-use Symfony\Component\HttpFoundation\Request;
-use Telegram\Bot\Types\Message;
 use Telegram\Bot\Types\Update;
 
 class CommandsHandler {
     private $commands = [];
     private $fallback;
-    private $request;
     private $input;
     private $token;
-    private $messagesKeys = ['message', 'edited_message', 'channel_post', 'edited_channel_post'];
 
     public function __construct(string $token) {
         $this->token = $token;
-        $this->request = new Request();
     }
 
     public function addCommand(string $command) {
@@ -45,42 +40,17 @@ class CommandsHandler {
 
         $update     = new Update($this->getInput());
         $payload    = new Payload($update);
+        $command    = $this->getCommand($payload);
 
-
-        $message = $this->getMessage($update);
-
-        $command = $this->getCommand($update, $message);
         $command->setApi(new Api($this->token));
-        $command->setUpdate($update);
-        $command->setMessage($message);
-
+        $command->setPayload($payload);
         $command->handle();
 
         return $command;
     }
 
-    private function getMessage(Update $update): Message {
-        foreach ($this->messagesKeys AS $key) {
-            if (isset($update->{$key})) {
-                return $update->{$key};
-            }
-        }
-    }
-
-    private function getText(Update $update, Message $message) {
-        $text = '';
-
-        if (!empty($message->text)) {
-            $text = $message->text;
-        } elseif(!empty($update->callback_query) && !empty($update->callback_query->data)) {
-            $text = $update->callback_query->data;
-        }
-
-        return $text;
-    }
-
-    private function getCommand(Update $update, Message $message): Command {
-        $text = $this->getText($update, $message);
+    private function getCommand(Payload $payload): Command {
+        $text = $payload->getText();
 
         foreach ($this->commands AS $command) {
             /** @var Command $cmd */
@@ -90,5 +60,7 @@ class CommandsHandler {
                 return $cmd;
             }
         }
+
+        return null;
     }
 }

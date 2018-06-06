@@ -3,10 +3,12 @@
 use Telegram\Bot\Types\User;
 
 class GetMeTest extends ApiTestCase {
-    protected $user;
+    protected static $user;
 
-    protected function setUp() {
-        $this->user = self::$api->getMe();
+    public static function setUpBeforeClass() {
+        parent::setUpBeforeClass();
+
+        self::$user = self::$api->getMe();
     }
 
     public function provider() {
@@ -14,7 +16,7 @@ class GetMeTest extends ApiTestCase {
     }
 
     public function testHasInstanceOfUser() {
-        $this->assertInstanceOf(User::class, $this->user);
+        $this->assertInstanceOf(User::class, self::$user);
     }
 
     /**
@@ -22,6 +24,6 @@ class GetMeTest extends ApiTestCase {
      * @param $attribute
      */
     public function testHasAttribute($attribute) {
-        $this->assertObjectHasAttribute($attribute, $this->user);
+        $this->assertObjectHasAttribute($attribute, self::$user);
     }
 }
