@@ -28,8 +28,6 @@ class HelpersTest extends HandlerTestCase {
     public function testReplyWithAction() {
         $result = self::$command->replyWithAction(Action::TYPING);
 
-        die(var_dump($result));
-
-        $this->assertInstanceOf(Message::class, $message);
+        $this->assertEquals(true, $result);
     }
 }

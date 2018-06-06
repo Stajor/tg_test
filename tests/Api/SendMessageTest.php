@@ -1,6 +1,10 @@
 <?php namespace Telegram\Bot\Test\Api;
 
+use Telegram\Bot\Types\ForceReply;
+use Telegram\Bot\Types\InlineKeyboardMarkup;
 use Telegram\Bot\Types\Message;
+use Telegram\Bot\Types\ReplyKeyboardMarkup;
+use Telegram\Bot\Types\ReplyKeyboardRemove;
 
 class SendMessageTest extends ApiTestCase {
     protected static $message;
@@ -68,5 +72,50 @@ class SendMessageTest extends ApiTestCase {
      */
     public function testHasAttribute($attribute) {
         $this->assertObjectHasAttribute($attribute, self::$message);
+    }
+
+    public function testInlineKeyboard() {
+        $markup = new InlineKeyboardMarkup();
+        $markup->addRow(['text' => 'First button', 'callback_data' => '1']);
+        $markup->addRow([
+            ['text' => 'Second button', 'callback_data' => '2'],
+            ['text' => 'Third button', 'url' => 'https://apple.com']
+        ]);
+
+        $message = self::$api->sendMessage([
+            'chat_id' => self::$chatId, 'text' => 'Inline Buttons', 'reply_markup' => $markup
+        ]);
+
+        $this->assertInstanceOf(Message::class, $message);
+    }
+
+    public function testReplyKeyboard() {
+        $markup = new ReplyKeyboardMarkup();
+        $markup->addRow(['text' => 'First button']);
+        $markup->addRow([['text' => 'Second button'], ['text' => 'Third button']]);
+
+        $message = self::$api->sendMessage([
+            'chat_id' => self::$chatId, 'text' => 'Reply Buttons', 'reply_markup' => $markup
+        ]);
+
+        $this->assertInstanceOf(Message::class, $message);
+    }
+
+    public function testReplyRemoveKeyboard() {
+        $markup = new ReplyKeyboardRemove(['remove_keyboard' => true]);
+        $message = self::$api->sendMessage([
+            'chat_id' => self::$chatId, 'text' => 'Reply Remove Buttons', 'reply_markup' => $markup
+        ]);
+
+        $this->assertInstanceOf(Message::class, $message);
+    }
+
+    public function testForceReplyKeyboard() {
+        $markup = new ForceReply(['force_reply' => true]);
+        $message = self::$api->sendMessage([
+            'chat_id' => self::$chatId, 'text' => 'Force Reply Buttons', 'reply_markup' => $markup
+        ]);
+
+        $this->assertInstanceOf(Message::class, $message);
     }
 }

@@ -80,6 +80,10 @@ class Api {
     }
 
     public function request(string $method, array $params, $type = null) {
+        if (isset($params['reply_markup']) && !empty($params['reply_markup'])) {
+            $params['reply_markup'] = (string)$params['reply_markup'];
+        }
+
         $result = $this->client->request('POST', self::API_URL."/bot{$this->token}/{$method}", ['form_params' => $params]);
         $data = json_decode($result->getBody()->getContents(), true);
 
