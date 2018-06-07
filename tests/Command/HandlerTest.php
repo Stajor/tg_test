@@ -28,6 +28,5 @@ class HandlerTest extends HandlerTestCase {
         $this->assertInstanceOf(Payload::class, self::$command->getPayload());
         $this->assertInstanceOf(Update::class, self::$command->getPayload()->getUpdate());
         $this->assertInstanceOf(Chat::class, self::$command->getPayload()->getChat());
-        $this->assertEquals('/test', self::$command->getPayload()->getText());
     }
 }

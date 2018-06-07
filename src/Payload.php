@@ -1,5 +1,6 @@
 <?php namespace Telegram\Bot;
 
+use Telegram\Bot\Types\CallbackQuery;
 use Telegram\Bot\Types\Chat;
 use Telegram\Bot\Types\Message;
 use Telegram\Bot\Types\Update;
@@ -27,16 +28,8 @@ class Payload {
         return $this->getMessage()->chat;
     }
 
-    public function getText(): string {
-        $text = '';
-
-        if (!empty($this->getMessage()->text)) {
-            $text = $this->getMessage()->text;
-        } elseif(!empty($this->getUpdate()->callback_query) && !empty($this->getUpdate()->callback_query->data)) {
-            $text = $this->getUpdate()->callback_query->data;
-        }
-
-        return $text;
+    public function getCallbackQuery(): ?CallbackQuery {
+        return $this->getUpdate()->callback_query;
     }
 
     private function setMessage() {
@@ -44,6 +37,10 @@ class Payload {
             if (isset($this->update->{$key})) {
                 $this->message = $this->update->{$key};
             }
+        }
+
+        if (isset($this->update->callback_query)) {
+            $this->message = $this->update->callback_query->message;
         }
     }
 }

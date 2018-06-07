@@ -1,13 +1,11 @@
 <?php namespace Telegram\Bot;
 
-use Telegram\Bot\Types\Message;
-use Telegram\Bot\Types\Update;
-
 abstract class Command {
     protected $name;
     protected $description;
     private $api;
     private $payload;
+    private $handler;
 
     abstract public function handle();
 
@@ -29,6 +27,16 @@ abstract class Command {
 
     public function getPayload(): Payload {
         return $this->payload;
+    }
+
+    public function setHandler(CommandsHandler $handler) {
+        $this->handler = $handler;
+    }
+
+    public function triggerCommand(string $command) {
+        $command = strpos($command, '/', 0) === 0 ? $command : "/{$command}";
+
+        $this->handler->triggerCommand($this->getPayload(), $command);
     }
 
     public function replyWithMessage($params) {

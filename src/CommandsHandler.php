@@ -40,23 +40,36 @@ class CommandsHandler {
 
         $update     = new Update($this->getInput());
         $payload    = new Payload($update);
-        $command    = $this->getCommand($payload);
+
+        return $this->triggerCommand($payload);
+    }
+
+    public function triggerCommand(Payload $payload, string $command = null): Command {
+        $command = $this->getCommand($payload, $command);
 
         $command->setApi(new Api($this->token));
         $command->setPayload($payload);
+        $command->setHandler($this);
         $command->handle();
 
         return $command;
     }
 
-    private function getCommand(Payload $payload): Command {
-        $text = $payload->getText();
+    private function getCommand(Payload $payload, string $command = null): Command {
+        if (is_null($command)) {
+            $messageText    = $payload->getMessage()->text;
+            $queryText      = is_null($payload->getCallbackQuery()) ? null : $payload->getCallbackQuery()->data;
+        } else {
+            $messageText = $command;
+        }
 
         foreach ($this->commands AS $command) {
             /** @var Command $cmd */
             $cmd = new $command();
 
-            if (strpos($text, "/{$cmd->getName()}", 0) === 0) {
+            if (strpos($messageText, "/{$cmd->getName()}", 0) === 0) {
+                return $cmd;
+            } elseif (!is_null($queryText) && strpos($queryText, "/{$cmd->getName()}", 0) === 0) {
                 return $cmd;
             }
         }
