@@ -17,4 +17,25 @@ class CallbackHandlerTest extends HandlerTestCase {
     public function testHandleCommand() {
         $this->assertInstanceOf(TestCommand::class, self::$command);
     }
+
+    public function testTriggerCommand() {
+        $message = '';
+
+        try {
+            self::$command->triggerCommand('test');
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+        }
+
+        $this->assertEquals($message, '');
+    }
+
+    public function testFallbackCommand() {
+        self::$handler->addFallbackCommand(FallbackCommand::class);
+        self::$handler->removeCommand(TestCommand::class);
+
+        $command = self::$handler->handle();
+
+        $this->assertInstanceOf(FallbackCommand::class, $command);
+    }
 }

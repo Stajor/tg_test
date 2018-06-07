@@ -18,6 +18,12 @@ class CommandsHandler {
         return $this;
     }
 
+    public function removeCommand(string $command) {
+        $this->commands = array_filter($this->commands, function($cmd) use ($command) {
+            return $cmd != $command;
+        });
+    }
+
     public function addFallbackCommand(string $fallback) {
         $this->fallback = $fallback;
 
@@ -73,6 +79,10 @@ class CommandsHandler {
             } elseif (!is_null($queryText) && strpos($queryText, "/{$cmd->getName()}", 0) === 0) {
                 return $cmd;
             }
+        }
+
+        if (isset($this->fallback)) {
+            return new $this->fallback();
         }
 
         return null;
