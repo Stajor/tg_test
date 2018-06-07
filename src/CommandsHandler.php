@@ -60,7 +60,8 @@ class CommandsHandler {
             $messageText    = $payload->getMessage()->text;
             $queryText      = is_null($payload->getCallbackQuery()) ? null : $payload->getCallbackQuery()->data;
         } else {
-            $messageText = $command;
+            $messageText    = $command;
+            $queryText      = null;
         }
 
         foreach ($this->commands AS $command) {
