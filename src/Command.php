@@ -39,7 +39,7 @@ abstract class Command {
         $this->handler->triggerCommand($this->getPayload(), $command);
     }
 
-    public function replyWithMessage($params) {
+    public function replyWithMessage(array $params) {
         $params['chat_id'] = $this->getPayload()->getChat()->id;
 
         return $this->getApi()->sendMessage($params);
