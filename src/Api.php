@@ -27,6 +27,22 @@ class Api {
         return $this->request('forwardMessage', $params, Message::class);
     }
 
+    public function editMessageText(array $params): Message {
+        return $this->request('editMessageText', $params, Message::class);
+    }
+
+    public function editMessageCaption(array $params): Message {
+        return $this->request('editMessageCaption', $params, Message::class);
+    }
+
+    public function editMessageReplyMarkup(array $params): Message {
+        return $this->request('editMessageReplyMarkup', $params, Message::class);
+    }
+
+    public function deleteMessage(array $params): bool {
+        return $this->request('deleteMessage', $params);
+    }
+
     public function sendPhoto(array $params): Message {
         return $this->request('sendPhoto', $params, Message::class);
     }
