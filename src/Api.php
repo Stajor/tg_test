@@ -1,8 +1,10 @@
 <?php namespace Telegram\Bot;
 
 use Telegram\Bot\Types\Message;
+use Telegram\Bot\Types\Update;
 use Telegram\Bot\Types\User;
 use GuzzleHttp\Client;
+use Telegram\Bot\Types\WebhookInfo;
 
 class Api {
     const API_URL = 'https://api.telegram.org';
@@ -17,6 +19,22 @@ class Api {
 
     public function getMe(): User {
         return $this->request('getMe', [], User::class);
+    }
+
+    public function getUpdates(array $params): array {
+        return $this->request('getUpdates', $params, Update::class, true);
+    }
+
+    public function setWebhook(array $params): bool {
+        return $this->request('setWebhook', $params);
+    }
+
+    public function deleteWebhook(): bool {
+        return $this->request('deleteWebhook');
+    }
+
+    public function getWebhookInfo(): WebhookInfo {
+        return $this->request('getWebhookInfo');
     }
 
     public function sendMessage(array $params): Message {
@@ -95,7 +113,7 @@ class Api {
         return $this->request('sendChatAction', $params);
     }
 
-    public function request(string $method, array $params, $type = null) {
+    public function request(string $method, array $params = [], $type = null, $isArray = false) {
         if (isset($params['reply_markup']) && !empty($params['reply_markup'])) {
             $params['reply_markup'] = (string)$params['reply_markup'];
         }
@@ -103,6 +121,13 @@ class Api {
         $result = $this->client->request('POST', self::API_URL."/bot{$this->token}/{$method}", ['form_params' => $params]);
         $data = json_decode($result->getBody()->getContents(), true);
 
-        return is_null($type) ? $data['result'] : new $type($data['result']);
+        if (!is_null($type) && $isArray)  {
+            return array_map(function($row) use ($type) {
+                return new $type($row);
+            }, $data['result']);
+        } else {
+            return is_null($type) ? $data['result'] : new $type($data['result']);
+        }
+
     }
 }
