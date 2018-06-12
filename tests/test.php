@@ -6,7 +6,7 @@ $dotenv->load();
 
 
 $method = 'getMe';
-$params = null;//['chat_id' => 42858, 'action' => 'typing'];
+$params = [];
 
 try {
     $response = $client->request('POST', "https://api.telegram.org/bot".getenv('BOT_TOKEN')."/{$method}", [
