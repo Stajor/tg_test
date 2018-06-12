@@ -8,7 +8,7 @@ class SendChatActionTest extends ApiTestCase {
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
 
-        self::$result = self::$api->sendChatAction(['chat_id' => self::$chatId, 'action' => Action::TYPING]);
+        self::$result = self::$api->sendChatAction(['chat_id' => 123, 'action' => Action::TYPING]);
     }
 
     public function testHasInstanceOfMessage() {

@@ -1,5 +1,6 @@
 <?php namespace Telegram\Bot;
 
+use GuzzleHttp\ClientInterface;
 use Telegram\Bot\Types\Update;
 
 class CommandsHandler {
@@ -7,9 +8,11 @@ class CommandsHandler {
     private $fallback;
     private $input;
     private $token;
+    private $api;
 
-    public function __construct(string $token) {
+    public function __construct(string $token, ClientInterface $client = null) {
         $this->token = $token;
+        $this->api = new Api($this->token, $client);
     }
 
     public function addCommand(string $command) {
@@ -53,7 +56,7 @@ class CommandsHandler {
     public function triggerCommand(Payload $payload, string $command = null): Command {
         $command = $this->getCommand($payload, $command);
 
-        $command->setApi(new Api($this->token));
+        $command->setApi($this->api);
         $command->setPayload($payload);
         $command->setHandler($this);
         $command->handle();

@@ -2,13 +2,13 @@
 
 use PHPUnit\Framework\TestCase;
 use Telegram\Bot\Api;
+use Telegram\Bot\Test\TestClient;
 
 class ApiTestCase extends TestCase {
     /** @var Api */
     protected static $api;
-    protected static $chatId = 42858;
 
     public static function setUpBeforeClass() {
-        self::$api = new Api('528001940:AAEcezPYlaRHFBT0dJsdqc3HDFok0uPXz1E');
+        self::$api = new Api('123:ABC', new TestClient());
     }
 }

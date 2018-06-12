@@ -12,7 +12,7 @@ class SendMessageTest extends ApiTestCase {
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
 
-        self::$message = self::$api->sendMessage(['chat_id' => self::$chatId, 'text' => 'test message']);
+        self::$message = self::$api->sendMessage(['chat_id' => 123, 'text' => 'test message']);
     }
 
     public function provider() {
@@ -83,7 +83,7 @@ class SendMessageTest extends ApiTestCase {
         ]);
 
         $message = self::$api->sendMessage([
-            'chat_id' => self::$chatId, 'text' => 'Inline Buttons', 'reply_markup' => $markup
+            'chat_id' => 123, 'text' => 'Inline Buttons', 'reply_markup' => $markup
         ]);
 
         $this->assertInstanceOf(Message::class, $message);
@@ -95,7 +95,7 @@ class SendMessageTest extends ApiTestCase {
         $markup->addRow([['text' => 'Second button'], ['text' => 'Third button']]);
 
         $message = self::$api->sendMessage([
-            'chat_id' => self::$chatId, 'text' => 'Reply Buttons', 'reply_markup' => $markup
+            'chat_id' => 123, 'text' => 'Reply Buttons', 'reply_markup' => $markup
         ]);
 
         $this->assertInstanceOf(Message::class, $message);
@@ -104,7 +104,7 @@ class SendMessageTest extends ApiTestCase {
     public function testReplyRemoveKeyboard() {
         $markup = new ReplyKeyboardRemove(['remove_keyboard' => true]);
         $message = self::$api->sendMessage([
-            'chat_id' => self::$chatId, 'text' => 'Reply Remove Buttons', 'reply_markup' => $markup
+            'chat_id' => 123, 'text' => 'Reply Remove Buttons', 'reply_markup' => $markup
         ]);
 
         $this->assertInstanceOf(Message::class, $message);
@@ -113,7 +113,7 @@ class SendMessageTest extends ApiTestCase {
     public function testForceReplyKeyboard() {
         $markup = new ForceReply(['force_reply' => true]);
         $message = self::$api->sendMessage([
-            'chat_id' => self::$chatId, 'text' => 'Force Reply Buttons', 'reply_markup' => $markup
+            'chat_id' => 123, 'text' => 'Force Reply Buttons', 'reply_markup' => $markup
         ]);
 
         $this->assertInstanceOf(Message::class, $message);
