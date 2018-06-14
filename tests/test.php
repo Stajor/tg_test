@@ -17,3 +17,6 @@ try {
     echo 'Exception: '.get_class($e)."\n";
     echo $e->getMessage()."\n";
 }
+
+
+$api = new \Telegram\Bot\Api('[bot token here]');
